@@ -2,8 +2,11 @@ import Sequelize from 'sequelize';
 import databaseConfig from '../config/database.js';
 
 import User from '../app/models/User.js';
+import Task from '../app/models/Task.js';
 
-const models = [User];
+
+
+const models = [User, Task];
 
 class Database{
   constructor(){
@@ -14,11 +17,8 @@ class Database{
     //Conexão com Banco
     this.connection = new Sequelize(databaseConfig);
 
-
-
-
-
-    models.map(model => model.init(this.connection));
+    models.map(model => model.init(this.connection))
+    .map(model => model.associate && model.associate(this.connection.models));
  }
 }
 
